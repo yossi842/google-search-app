@@ -1,34 +1,42 @@
-const express = require('express');
-const axios = require('axios');
-const path = require('path');
-const app = express();
-const port = process.env.PORT || 3000;
+function search() {
+    const searchTerm = document.getElementById("searchInput").value;
+    const searchResultsDiv = document.getElementById("searchResults");
 
-// שמור את מפתח ה-API ומזהה מנוע החיפוש כמשתני סביבה (מומלץ יותר)
-// או כקבועים כאן (פחות מומלץ לשימוש אמיתי, אבל בסדר לצורך הדוגמה)
-const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmxs'
-const CSE_ID = '87e15d9184a22481e'
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '.')));
+    // ננקה תוצאות קודמות
+    searchResultsDiv.innerHTML = "";
 
-app.post('/search', async (req, res) => {
-    const { query } = req.body;
-    console.log(`התקבלה בקשת חיפוש עבור: ${query}`);
+    fetch('/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: searchTerm })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.results && data.results.length > 0) {
+            data.results.forEach(result => {
+                const resultDiv = document.createElement('div');
+                const title = document.createElement('h3');
+                const link = document.createElement('a');
+                const snippet = document.createElement('p');
 
-    try {
-        const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}`;
-        const googleResponse = await axios.get(searchUrl);
-        const searchResults = googleResponse.data.items || []; // אם יש תוצאות, הן יהיו במאפיין 'items'
+                link.href = result.link;
+                link.textContent = result.title;
+                title.appendChild(link);
 
-        console.log("תוצאות מגוגל (JSON):", searchResults.slice(0, 2)); // מציג רק 2 תוצאות ראשונות
+                snippet.textContent = result.snippet;
 
-        res.json({ results: searchResults }); // שולח את תוצאות החיפוש בחזרה לאתר
-    } catch (error) {
-        console.error("שגיאה בחיפוש:", error);
-        res.status(500).json({ error: 'אירעה שגיאה בחיפוש' });
-    }
-});
-
-app.listen(port, () => {
-    console.log(`השרת מאזין בפורט ${port}`);
-});
+                resultDiv.appendChild(title);
+                resultDiv.appendChild(snippet);
+                searchResultsDiv.appendChild(resultDiv);
+            });
+        } else {
+            searchResultsDiv.textContent = "לא נמצאו תוצאות.";
+        }
+    })
+    .catch(error => {
+        console.error("שגיאה:", error);
+        searchResultsDiv.textContent = "אירעה שגיאה בחיפוש.";
+    });
+}
