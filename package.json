@@ -1,0 +1,13 @@
+{
+  "name": "google-search-app",
+  "version": "1.0.0",
+  "description": "יישום חיפוש גוגל פשוט",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "axios": "^0.21.1"
+  }
+}
