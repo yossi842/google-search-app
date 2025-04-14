@@ -16,11 +16,11 @@ function search() {
                 const title = document.createElement('h3');
                 const linkSpan = document.createElement('span');
                 const snippet = document.createElement('p');
+                let thumbnailElement = '';
 
                 linkSpan.textContent = result.title;
                 linkSpan.style.cursor = 'pointer';
                 linkSpan.onclick = () => {
-                    // הפניה לנקודת הקצה החדשה בשרת להצגת הדף
                     window.location.href = `/view-page?url=${encodeURIComponent(result.link)}`;
                 };
                 title.appendChild(linkSpan);
@@ -28,6 +28,14 @@ function search() {
                 snippet.textContent = result.snippet;
 
                 resultDiv.appendChild(title);
+
+                // בדיקה אם קיים pagemap ויש בו תמונה ממוזערת
+                if (result.pagemap && result.pagemap.cse_thumbnail && result.pagemap.cse_thumbnail.length > 0) {
+                    const thumbnailUrl = result.pagemap.cse_thumbnail[0].src;
+                    thumbnailElement = `<img src="${thumbnailUrl}" style="max-width: 100px; max-height: 100px; margin-left: 10px; vertical-align: middle;">`;
+                    title.insertAdjacentHTML('beforeend', thumbnailElement);
+                }
+
                 resultDiv.appendChild(snippet);
                 searchResultsDiv.appendChild(resultDiv);
             });
