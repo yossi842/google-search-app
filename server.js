@@ -4,8 +4,8 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const API_KEY = '87e15d9184a22481e'; 
-const CSE_ID = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmxs';
+const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmx'; 
+const CSE_ID = '87e15d9184a22481e';
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
