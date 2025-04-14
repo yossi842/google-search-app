@@ -4,7 +4,7 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmxs'; 
+const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmxs';
 const CSE_ID = '87e15d9184a22481e';
 
 app.use(express.json());
@@ -26,7 +26,27 @@ app.post('/search', async (req, res) => {
     }
 });
 
-// נקודת קצה חדשה להפניה מחדש
+// נקודת קצה חדשה להצגת דף דרך השרת
+app.get('/view-page', async (req, res) => {
+    const targetUrl = req.query.url;
+    if (!targetUrl) {
+        return res.status(400).send('בקשה לא תקינה: חסר פרמטר URL');
+    }
+
+    console.log(`מנסה להציג דף דרך השרת: ${targetUrl}`);
+
+    try {
+        const response = await axios.get(targetUrl);
+        // פשוט שולחים את ה-HTML שקיבלנו מהאתר החיצוני כפי שהוא
+        res.send(response.data);
+        console.log(`הצגת הדף ${targetUrl} דרך השרת הצליחה`);
+    } catch (error) {
+        console.error(`שגיאה בהבאת הדף ${targetUrl}:`, error);
+        res.status(500).send(`אירעה שגיאה בניסיון להציג את הדף: ${error}`);
+    }
+});
+
+// נקודת קצה להפניה מחדש (ייתכן שכבר לא בשימוש ישיר)
 app.get('/redirect', (req, res) => {
     const targetUrl = req.query.url;
     if (targetUrl) {
