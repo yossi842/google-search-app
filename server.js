@@ -4,7 +4,7 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmx'; 
+const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmxs'; 
 const CSE_ID = '87e15d9184a22481e';
 
 app.use(express.json());
