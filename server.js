@@ -4,8 +4,8 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const API_KEY = 'YOUR_API_KEY'; // החלף את זה במפתח ה-API שלך
-const CSE_ID = 'YOUR_CSE_ID'; // החלף את זה במזהה מנוע החיפוש שלך
+const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmxs' 
+const CSE_ID = '87e15d9184a22481e'
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
