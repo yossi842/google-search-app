@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>חיפוש גוגל שלי</title>
+</head>
+<body>
+    <h1>מה תרצה לחפש?</h1>
+    <input type="text" id="searchInput" name="search">
+    <button onclick="search()">חפש</button>
+    <div id="searchResults">
+        </div>
+
+    <script>
+        function search() {
+            const searchTerm = document.getElementById("searchInput").value;
+            // בשלב הבא נטפל בשליחת הבקשה לשרת
+            console.log("מחפש את:", searchTerm);
+        }
+    </script>
+</body>
+</html>
