@@ -1,9 +1,11 @@
 const express = require('express');
 const axios = require('axios');
+const path = require('path'); // מייבאים מודול לטיפול בנתיבי קבצים
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json()); // כדי שהשרת יוכל לקרוא JSON מגוף הבקשה
+app.use(express.static(path.join(__dirname, '.'))); // מגישים קבצים סטטיים (כמו index.html ו-script.js) מהתיקייה הנוכחית
 
 app.post('/search', async (req, res) => {
     const { query } = req.body;
