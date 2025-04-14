@@ -15,7 +15,7 @@ app.post('/search', async (req, res) => {
     console.log(`התקבלה בקשת חיפוש עבור: ${query}`);
 
     try {
-        const searchUrl = `https://www.googleapis.com/customsearch/v1?key=<span class="math-inline">\{API\_KEY\}&cx\=</span>{CSE_ID}&q=${encodeURIComponent(query)}`;
+        const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}`;
         const googleResponse = await axios.get(searchUrl);
         const searchResults = googleResponse.data.items || [];
         console.log("תוצאות מגוגל (JSON):", searchResults.slice(0, 2));
