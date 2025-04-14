@@ -14,13 +14,14 @@ function search() {
             data.results.forEach(result => {
                 const resultDiv = document.createElement('div');
                 const title = document.createElement('h3');
-                const linkSpan = document.createElement('span'); // השתמשנו ב-<span> במקום <a>
+                const linkSpan = document.createElement('span');
                 const snippet = document.createElement('p');
 
                 linkSpan.textContent = result.title;
-                linkSpan.style.cursor = 'pointer'; // משנה את סמן העכבר לרמז על קישור
-                linkSpan.onclick = () => { // הוספת מאזין לאירוע קליק
-                    window.location.href = `/redirect?url=${encodeURIComponent(result.link)}`;
+                linkSpan.style.cursor = 'pointer';
+                linkSpan.onclick = () => {
+                    // הפניה לנקודת הקצה החדשה בשרת להצגת הדף
+                    window.location.href = `/view-page?url=${encodeURIComponent(result.link)}`;
                 };
                 title.appendChild(linkSpan);
 
