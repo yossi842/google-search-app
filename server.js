@@ -1,28 +1,28 @@
 const express = require('express');
 const axios = require('axios');
-const path = require('path'); // מייבאים מודול לטיפול בנתיבי קבצים
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json()); // כדי שהשרת יוכל לקרוא JSON מגוף הבקשה
-app.use(express.static(path.join(__dirname, '.'))); // מגישים קבצים סטטיים (כמו index.html ו-script.js) מהתיקייה הנוכחית
+// שמור את מפתח ה-API ומזהה מנוע החיפוש כמשתני סביבה (מומלץ יותר)
+// או כקבועים כאן (פחות מומלץ לשימוש אמיתי, אבל בסדר לצורך הדוגמה)
+const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmxs'
+const CSE_ID = '87e15d9184a22481e'
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '.')));
 
 app.post('/search', async (req, res) => {
     const { query } = req.body;
     console.log(`התקבלה בקשת חיפוש עבור: ${query}`);
 
     try {
-        // כאן נשלח בקשה לגוגל ונחזיר את התוצאות
-        const googleResults = await axios.get(`https://www.google.com/search?q=${query}`);
-        // שימו לב: שליחה ישירה לגוגל בצורה הזו לא תמיד עובדת טוב
-        // בגלל הגבלות ואופן הצגת התוצאות.
-        // בשלב מאוחר יותר, ייתכן שנצטרך להשתמש ב-API רשמי של גוגל (אם קיים ונגיש)
-        // או למצוא דרך אחרת לקבל תוצאות.
-        // כרגע, אנחנו רק מדגימים את שליחת הבקשה.
+        const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}`;
+        const googleResponse = await axios.get(searchUrl);
+        const searchResults = googleResponse.data.items || []; // אם יש תוצאות, הן יהיו במאפיין 'items'
 
-        console.log("תוצאות מגוגל (חלקיות):", googleResults.data.slice(0, 200)); // מציג רק חלק קטן מהתוצאות
+        console.log("תוצאות מגוגל (JSON):", searchResults.slice(0, 2)); // מציג רק 2 תוצאות ראשונות
 
-        res.json({ results: "תוצאות מגוגל יופיעו כאן בהמשך" }); // כרגע אנחנו רק שולחים הודעה פשוטה חזרה
+        res.json({ results: searchResults }); // שולח את תוצאות החיפוש בחזרה לאתר
     } catch (error) {
         console.error("שגיאה בחיפוש:", error);
         res.status(500).json({ error: 'אירעה שגיאה בחיפוש' });
