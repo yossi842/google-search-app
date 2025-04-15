@@ -18,7 +18,12 @@ app.post('/search', async (req, res) => {
         const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}`;
         const googleResponse = await axios.get(searchUrl);
         const searchResults = googleResponse.data.items || [];
-        console.log("תוצאות מגוגל (JSON):", searchResults.slice(0, 2));
+        console.log("תוצאות מגוגל (JSON):", searchResults.slice(0, 1).map(result => ({
+            title: result.title,
+            link: result.link,
+            snippet: result.snippet,
+            thumbnail: result.pagemap && result.pagemap.cse_thumbnail ? result.pagemap.cse_thumbnail : 'אין תמונה ממוזערת'
+        })));
         res.json({ results: searchResults });
     } catch (error) {
         console.error("שגיאה בחיפוש:", error);
