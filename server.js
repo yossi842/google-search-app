@@ -8,7 +8,7 @@ const API_KEY = 'AIzaSyCAiE8FA-duH18jiKZ86MGZg1K_zo3kmxs';
 const CSE_ID = '87e15d9184a22481e';
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '.')));
+app.use(express.static(__dirname)); // שינוי כאן
 
 app.post('/search', async (req, res) => {
     const { query } = req.body;
