@@ -31,7 +31,9 @@ function search() {
 
                 // בדיקה אם קיים pagemap ויש בו תמונה ממוזערת
                 if (result.pagemap && result.pagemap.cse_thumbnail && result.pagemap.cse_thumbnail.length > 0) {
-                    const thumbnailUrl = result.pagemap.cse_thumbnail[0].src;
+                    const thumbnailObject = result.pagemap.cse_thumbnail[0];
+                    console.log("אובייקט תמונה ממוזערת:", thumbnailObject); // הוספנו את הלוג הזה
+                    const thumbnailUrl = thumbnailObject.src;
                     thumbnailElement = `<img src="${thumbnailUrl}" style="max-width: 100px; max-height: 100px; margin-left: 10px; vertical-align: middle;">`;
                     title.insertAdjacentHTML('beforeend', thumbnailElement);
                 }
